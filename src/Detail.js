@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 class Detail extends Component {
@@ -10,16 +9,11 @@ class Detail extends Component {
   };
 
   undo() {
-      this.trackInfo.value = this.state.trackName;
+      this.trackName.value = this.state.trackName;
       this.trackDate.value = this.state.date;
       this.setState({change: false});
   };
 
-  save() {
-      this.setState({trackName: this.trackInfo.value, date: this.trackDate.value});
-      console.log(this.state);
-      this.setState({change: false});
-  };
 
   render() {
     const { item } = this.props;
@@ -30,26 +24,40 @@ class Detail extends Component {
     return (
       <div>
         Detail!!
-        <input ref={(input) => {this.trackInfo = input }} type="text" defaultValue={this.state.trackName}
+        <input ref={(input) => {this.trackName = input }} type="text" defaultValue={this.state.trackName}
           onChange={e =>
             e.target.value !== this.state.trackName ?
               this.setState({ change: true }) : this.setState({ change: false })}
         />
         <input ref={(input) => {this.trackDate = input }} type="text" defaultValue={this.state.date}
-          onChange={e =>
+          disabled="disabled" onChange={e =>
             e.target.value !== this.state.date ?
               this.setState({change: true }) : this.setState({ change: false })}
         />
-        <button disabled={!this.state.change} onClick={this.save.bind(this)}>Save</button>
+        <button disabled={!this.state.change}
+            onClick={() => this.props.onSaveChange(this.state.date, this.trackDate.value, this.trackName.value)}
+        >Save</button>
         <button disabled={!this.state.change} onClick={this.undo.bind(this)}>Undo</button>
       </div>
     );
   }
 }
 
-export default connect((state, props) => {
-  // console.log(state, props);
-  return ({
-    item: state.filter(item => item.date === props.params.date)[0],
-  })
-})(Detail);
+
+export default connect(
+    (state, props) => {
+        console.log('state', state);
+        console.log('props', props);
+        return ({
+            item: state.filter(item => item.date === props.params.date)[0],
+        })
+    },
+    dispatch => ({
+        onSaveChange: (id, newDate, newText) => {
+            return dispatch({
+                type: 'SAVE_CHANGES',
+                payload: {id: id, newDate: newDate, newText: newText}
+            })
+        }
+    })
+)(Detail);

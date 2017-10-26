@@ -7,7 +7,7 @@ class Main extends Component {
     this.props.onAddTrack(this.trackInput.value);
   }
   render() {
-    console.log(this.props.data);
+    // console.log(this.props.data);
     return (
       <div>
         <input type="text" ref={(input) => {this.trackInput = input }}/>

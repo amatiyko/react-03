@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, combineReducers } from 'redux';
+import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { Route, IndexRoute, Router, browserHistory } from 'react-router'
+import { Route, Router, browserHistory } from 'react-router'
 
 import Layout from './Layout';
 
@@ -39,6 +39,18 @@ function playlist(state = initial, action) {
       state.splice(action.payload, 1);
       console.log(state);
       return [...state];
+  }
+  if (action.type === 'SAVE_CHANGES') {
+      var newState = [...state];
+      newState.map(item => {
+          if (item.date === action.payload.id) {
+              item.date = action.payload.newDate;
+              item.trackName = action.payload.newText;
+          }
+      });
+      // newState[action.payload.id].trackName = action.payload.newText;
+      // newState[action.payload.id].date = action.payload.newDate;
+      return newState;
   }
   return state;
 }
