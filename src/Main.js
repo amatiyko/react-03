@@ -58,7 +58,7 @@ export default connect(
       type: 'ADD_TRACK',
       payload: {
         trackName,
-        date: new Date().valueOf(),
+        date: (new Date().valueOf()).toString(),
       },
     }),
     onDeleteTrack: id => {

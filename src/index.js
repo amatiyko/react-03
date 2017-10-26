@@ -38,7 +38,7 @@ function playlist(state = initial, action) {
   if (action.type === 'DELETE_TRACK') {
       state.splice(action.payload, 1);
       console.log(state);
-      return state;
+      return [...state];
   }
   return state;
 }
