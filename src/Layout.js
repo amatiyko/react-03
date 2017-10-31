@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 
 class Layout extends Component {
   render() {
-    // console.log('children', this.props.children);
     return (
       <div>
         <div>

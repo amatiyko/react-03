@@ -17,6 +17,7 @@ const routes = (
     <Route path="dropdown" component={Dropdown} />
   </Route>
 );
+
 const initial = [
   {
     trackName: "1",
@@ -28,7 +29,9 @@ const initial = [
   }
 ];
 
-function playlist(state = initial, action) {
+const initialData = localStorage.getItem('data') ? JSON.parse(localStorage.getItem('data')) : initial;
+
+function playlist(state = initialData, action) {
   if (action.type === 'ADD_TRACK') {
     return [
       ...state,
@@ -37,7 +40,6 @@ function playlist(state = initial, action) {
   }
   if (action.type === 'DELETE_TRACK') {
       state.splice(action.payload, 1);
-      console.log(state);
       return [...state];
   }
   if (action.type === 'SAVE_CHANGES') {
@@ -45,17 +47,19 @@ function playlist(state = initial, action) {
       newState.map(item => {
           if (item.date === action.payload.id) {
               item.date = action.payload.newDate;
-              item.trackName = action.payload.newText;
+              item.trackName = action.payload.newName;
           }
       });
-      // newState[action.payload.id].trackName = action.payload.newText;
-      // newState[action.payload.id].date = action.payload.newDate;
       return newState;
   }
   return state;
 }
 
 const store = createStore(playlist);
+
+store.subscribe(()=>{
+   localStorage.setItem('data', JSON.stringify(store.getState()));
+});
 
 ReactDOM.render(
   <Provider store={store}>

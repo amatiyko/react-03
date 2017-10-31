@@ -29,8 +29,8 @@ class Detail extends Component {
             e.target.value !== this.state.trackName ?
               this.setState({ change: true }) : this.setState({ change: false })}
         />
-        <input ref={(input) => {this.trackDate = input }} type="text" defaultValue={this.state.date}
-          disabled="disabled" onChange={e =>
+        <input disabled ref={(input) => {this.trackDate = input }} type="text" defaultValue={this.state.date}
+          onChange={e =>
             e.target.value !== this.state.date ?
               this.setState({change: true }) : this.setState({ change: false })}
         />
@@ -46,17 +46,15 @@ class Detail extends Component {
 
 export default connect(
     (state, props) => {
-        console.log('state', state);
-        console.log('props', props);
         return ({
             item: state.filter(item => item.date === props.params.date)[0],
         })
     },
     dispatch => ({
-        onSaveChange: (id, newDate, newText) => {
+        onSaveChange: (id, newDate, newName) => {
             return dispatch({
                 type: 'SAVE_CHANGES',
-                payload: {id: id, newDate: newDate, newText: newText}
+                payload: {id: id, newDate: newDate, newName: newName}
             })
         }
     })
