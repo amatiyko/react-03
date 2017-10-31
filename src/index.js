@@ -22,10 +22,12 @@ const initial = [
   {
     trackName: "call mom",
     date: '1000',
+    finishOn: 'everyday task'
   },
   {
     trackName: "feed cat",
     date: '2000',
+    finishOn: 'everyday task'
   }
 ];
 
@@ -33,6 +35,10 @@ const initialData = localStorage.getItem('data') ? JSON.parse(localStorage.getIt
 
 function playlist(state = initialData, action) {
   if (action.type === 'ADD_TRACK') {
+    if (action.payload.trackName === '') return state;
+
+    action.payload.finishOn === '' && (action.payload.finishOn = 'everyday task');
+
     return [
       ...state,
       action.payload,

@@ -4,19 +4,21 @@ import { connect } from 'react-redux';
 
 class Main extends Component {
   addTrack() {
-    this.props.onAddTrack(this.trackInput.value);
+    this.props.onAddTrack(this.trackInput.value, this.dateInput.value);
   }
   render() {
     // console.log(this.props.data);
     return (
       <div>
         <input type="text" ref={(input) => {this.trackInput = input }}/>
+        <input type="date" ref={(input) => {this.dateInput = input}}/>
         <button onClick={this.addTrack.bind(this)}>Add track</button>
         <table>
           <thead>
             <tr>
               <td>Date</td>
               <td>Task</td>
+              <td>Finish On</td>
               <td>Show details</td>
               <td>Action</td>
             </tr>
@@ -27,6 +29,7 @@ class Main extends Component {
               <tr key={key}>
                 <td>{item.date}</td>
                 <td>{item.trackName}</td>
+                <td>{item.finishOn}</td>
                 <td>
                   <Link to={`/detail/${item.date}`}>
                     View details
@@ -54,11 +57,12 @@ export default connect(
     data: state,
   }),
   dispatch => ({
-    onAddTrack: trackName => dispatch({
+    onAddTrack: (trackName, finishDate = 'everyday task') => dispatch({
       type: 'ADD_TRACK',
       payload: {
         trackName,
         date: (new Date().valueOf()).toString(),
+        finishOn: finishDate
       },
     }),
     onDeleteTrack: id => {
