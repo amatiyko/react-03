@@ -52,7 +52,7 @@ function playlist(state = initialData, action) {
       var newState = [...state];
       newState.map(item => {
           if (item.date === action.payload.id) {
-              item.date = action.payload.newDate;
+              item.finishOn = action.payload.newDate;
               item.trackName = action.payload.newName;
           }
       });

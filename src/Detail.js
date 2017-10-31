@@ -6,11 +6,12 @@ class Detail extends Component {
     change: false,
     date: this.props.item.date,
     trackName: this.props.item.trackName,
+    finishOn: this.props.item.finishOn
   };
 
   undo() {
       this.trackName.value = this.state.trackName;
-      this.trackDate.value = this.state.date;
+      this.trackFinishDate = this.state.finishOn;
       this.setState({change: false});
   };
 
@@ -29,13 +30,18 @@ class Detail extends Component {
             e.target.value !== this.state.trackName ?
               this.setState({ change: true }) : this.setState({ change: false })}
         />
+        <input ref={(input) => {this.trackFinishDate = input }} type="text" defaultValue={this.state.finishOn}
+            onChange={e =>
+             e.target.value !== this.state.date ?
+                this.setState({change: true }) : this.setState({ change: false })}
+        />
         <input disabled ref={(input) => {this.trackDate = input }} type="text" defaultValue={this.state.date}
           onChange={e =>
             e.target.value !== this.state.date ?
               this.setState({change: true }) : this.setState({ change: false })}
         />
         <button disabled={!this.state.change}
-            onClick={() => this.props.onSaveChange(this.state.date, this.trackDate.value, this.trackName.value)}
+            onClick={() => this.props.onSaveChange(this.state.date, this.trackFinishDate.value, this.trackName.value)}
         >Save</button>
         <button disabled={!this.state.change} onClick={this.undo.bind(this)}>Undo</button>
       </div>
